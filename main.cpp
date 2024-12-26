@@ -1,47 +1,46 @@
-#include <raylib.h>
-#include "WM.cpp"
+#include <X11/Xlib.h>
+#include <X11/X.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <iostream>
+#include <X11/cursorfont.h>
 
-int main(int argc, char *argv[]) {
-    // Get starting dimensions
-    int w = 1200;
-    int h = 900;
-    if(argc == 2) {
-        w = stoi(argv[0]);
-        h = stoi(argv[1]);
-    } 
+using namespace std;
 
-    SetConfigFlags(FLAG_VSYNC_HINT | FLAG_WINDOW_TRANSPARENT | FLAG_FULLSCREEN_MODE);
-    InitWindow(1200, 900, "minwm test");
-    WM::Load();
+void panic(string msg) {
+    puts(msg.c_str());
+    exit(EXIT_FAILURE);
+}
 
-    WM::Create(WM::Window( 
-        "Test Window",
-        {30, 30, 480, 300},
-        function<void(WM::Window*)>([](WM::Window* self) { 
+int main() {
+    Display * display = XOpenDisplay(NULL);
+    if(display == nullptr) {
+        panic("Failed to open a display");
+    }
+    Window root = DefaultRootWindow(display);
 
-        })
-    ));
-    WM::Create(WM::Window( 
-        "Test Window 2",
-        {30, 30, 480, 300},
-        function<void(WM::Window*)>([](WM::Window* self) { 
+    XSelectInput(display, root, SubstructureRedirectMask | SubstructureNotifyMask | ButtonPress);
+    XSync(display, false);
+    Cursor cursor = XCreateFontCursor(display, XC_left_ptr);
+    XDefineCursor(display, root, cursor);
+    XSync(display, false);
 
-        })
-    ));
-
-    while(!WindowShouldClose()) {
-        // Draw WM
-        BeginDrawing();
-        ClearBackground(BLANK);
-
-        WM::Draw();
-
-        EndDrawing();
-
-        // Update windows
-        WM::Update();
+    XEvent e;
+    for (;;) {
+        XNextEvent(display, &e);
+        switch (e.type) {
+            default:
+                cout << "WM:\tUnexpected event id " << e.type << endl;
+                break;
+            case ButtonPress:
+                XAllowEvents(display, ReplayPointer, CurrentTime);
+                XSync(display, 0);
+                puts("WM:\tButton pressed");
+                break;
+        }
+        // Ensures that X will proccess the event.
+        XSync(display, 0);
     }
 
-    WM::Unload();
-    CloseWindow();
+    XCloseDisplay(display);
 }
