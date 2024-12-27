@@ -1,5 +1,11 @@
 {
     "editor.tabSize": 4,
     "editor.stickyTabStops": true,
-    "editor.tabCompletion": "on"
+    "editor.tabCompletion": "on",
+    "files.associations": {
+        "iostream": "cpp",
+        "numbers": "cpp",
+        "algorithm": "cpp",
+        "cmath": "cpp"
+    }
 }

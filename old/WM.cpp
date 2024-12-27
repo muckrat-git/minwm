@@ -1,7 +1,7 @@
-#include <raylib.h>
+#include <functional>
 #include <iostream>
 #include <vector>
-#include <functional>
+#include <raylib.h>
 #include <AnimValue.cpp>
 
 #define LINE_COLOR (Color){102, 102, 102, 255}

@@ -1,22 +1,13 @@
 #pragma once
 
-#include <raylib.h>
-#include <raymath.h>
 #include <algorithm>
+#include <Vec2.cpp>
 
 using namespace std;
 
 // Generalized lerp
-float lerp(float a, float b, float x) { return Lerp(a, b, x); }
-Vector2 lerp(Vector2 a, Vector2 b, float x) { return Vector2Lerp(a, b, x); }
-Rectangle lerp(Rectangle a, Rectangle b, float x) {
-    return {
-        .x =        Lerp(a.x, b.x, x),
-        .y =        Lerp(a.y, b.y, x),
-        .width =    Lerp(a.width, b.width, x),
-        .height =   Lerp(a.height, b.height, x)
-    };
-}
+float lerp(float a, float b, float x) { return a + (b - a) * x; }
+Vec2<float> lerp(Vec2<float> a, Vec2<float> b, float x) { return a.Lerp(b, x); }
 
 template <typename type>
 class AnimValue {
