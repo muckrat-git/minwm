@@ -1,3 +1,4 @@
 #!/bin/sh
-xeyes && sleep 2 &
+#xcompmgr &
+xfce4-terminal && sleep 2 &
 exec ./main

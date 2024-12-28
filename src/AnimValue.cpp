@@ -11,11 +11,10 @@ Vec2<float> lerp(Vec2<float> a, Vec2<float> b, float x) { return a.Lerp(b, x); }
 
 template <typename type>
 class AnimValue {
-    private:
+    public:
     type src, dest;
     double srcT, moveT;
-
-    public:
+    
     type Get() {
         if(moveT == 0) return dest;
         return lerp(src, dest, min(1.0,(GetTime() - srcT) / moveT));

@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <unordered_map>
+#include <math.h>
 
 using namespace std;
 
@@ -67,6 +68,12 @@ struct Vec2 {
 
     bool operator!=(const Vec2 &rhs) const {
         return !operator==(rhs);
+    }
+
+    float Distance(Vec2 b) {
+        return sqrtf(
+            powf((float)x - (float)b.x, 2) + powf((float)y - (float)b.y, 2)
+        );
     }
 
     string Str() {
